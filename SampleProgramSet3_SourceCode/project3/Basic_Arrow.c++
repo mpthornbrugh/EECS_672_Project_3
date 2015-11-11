@@ -36,7 +36,7 @@ void Basic_Arrow::define_basic_arrow()
 		{basexmin ,baseymin, basezmin},
 		{basexmin ,baseymax, basezmin},
 		{(basexmin - 5.0) ,baseymin, ((basezmax + basezmin)/2.0)},
-		{(basexmin - 5.0) ,baseymin, ((basezmax + basezmin)/2.0)},
+		{(basexmin - 5.0) ,baseymax, ((basezmax + basezmin)/2.0)},
 		{basexmin ,baseymin, basezmax},
 		{basexmin ,baseymax, basezmax},
 		{basexmax ,baseymin, basezmax},
@@ -56,39 +56,39 @@ void Basic_Arrow::define_basic_arrow()
 		
 		//Sharp edge of arrow front
 		{basexmin ,baseymax, basezmin},
-		{(basexmin - 5.0) ,baseymin, ((basezmax + basezmin)/2.0)},
-		{(basexmin - 25.0) ,(baseymax + 40.0) , (basezmin + 2.0)},
-		{(basexmin - 30.0) ,(baseymax + 40.0) , (basezmin + 2.5)},
-		{((basexmax + basexmin)/2.0) ,(baseymax + 95.0), (basezmin + 2.0)},
-		{((basexmax + basexmin)/2.0) ,(baseymax + 100.0), (basezmin + 2.5)},
-		{(basexmax + 25.0) ,(baseymax + 40.0) , (basezmin + 2.0)},
-		{(basexmax + 30.0) ,(baseymax + 40.0) , (basezmin + 2.5)},
+		{(basexmin - 5.0) ,baseymax, ((basezmax + basezmin)/2.0)},
+		{(basexmin - 15.0) ,(baseymax + 30.0) , (basezmin + 2.0)},
+		{(basexmin - 20.0) ,(baseymax + 30.0) , (basezmin + 2.5)},
+		{((basexmax + basexmin)/2.0) ,(baseymax + 105.0), (basezmin + 2.0)},
+		{((basexmax + basexmin)/2.0) ,(baseymax + 110.0), (basezmin + 2.5)},
+		{(basexmax + 15.0) ,(baseymax + 30.0) , (basezmin + 2.0)},
+		{(basexmax + 20.0) ,(baseymax + 30.0) , (basezmin + 2.5)},
 		{basexmax ,baseymax, basezmin},
-		{(basexmax + 5.0) ,baseymin, ((basezmax + basezmin)/2.0)},
+		{(basexmax + 5.0) ,baseymax, ((basezmax + basezmin)/2.0)},
 		
 		//Sharp edge of arrow back
 		{basexmin ,baseymax, basezmax},
-		{(basexmin - 5.0) ,baseymin, ((basezmax + basezmin)/2.0)},
-		{(basexmin - 25.0) ,(baseymax + 40.0) , (basezmax - 2.0)},
-		{(basexmin - 30.0) ,(baseymax + 40.0) , (basezmax - 2.5)},
-		{((basexmax + basexmin)/2.0) ,(baseymax + 95.0), (basezmax - 2.0)},
-		{((basexmax + basexmin)/2.0) ,(baseymax + 100.0), (basezmax - 2.5)},
-		{(basexmax + 25.0) ,(baseymax + 40.0) , (basezmax - 2.0)},
-		{(basexmax + 30.0) ,(baseymax + 40.0) , (basezmax - 2.5)},
+		{(basexmin - 5.0) ,baseymax, ((basezmax + basezmin)/2.0)},
+		{(basexmin - 15.0) ,(baseymax + 30.0) , (basezmax - 2.0)},
+		{(basexmin - 20.0) ,(baseymax + 30.0) , (basezmax - 2.5)},
+		{((basexmax + basexmin)/2.0) ,(baseymax + 105.0), (basezmax - 2.0)},
+		{((basexmax + basexmin)/2.0) ,(baseymax + 110.0), (basezmax - 2.5)},
+		{(basexmax + 15.0) ,(baseymax + 30.0) , (basezmax - 2.0)},
+		{(basexmax + 20.0) ,(baseymax + 30.0) , (basezmax - 2.5)},
 		{basexmax ,baseymax, basezmax},
-		{(basexmax + 5.0) ,baseymin, ((basezmax + basezmin)/2.0)},
+		{(basexmax + 5.0) ,baseymax, ((basezmax + basezmin)/2.0)},
 		
 		//Flat part of arrow front
-		{((basexmax + basexmin)/2.0) ,(baseymax + 95.0), (basezmin + 2.0)},
-		{(basexmin - 25.0) ,(baseymax + 40.0) , (basezmin + 2.0)},
-		{(basexmax + 25.0) ,(baseymax + 40.0) , (basezmin + 2.0)},
+		{((basexmax + basexmin)/2.0) ,(baseymax + 105.0), (basezmin + 2.0)},
+		{(basexmin - 15.0) ,(baseymax + 30.0) , (basezmin + 2.0)},
+		{(basexmax + 15.0) ,(baseymax + 30.0) , (basezmin + 2.0)},
 		{basexmin ,baseymax, basezmin},
 		{basexmax ,baseymax, basezmin},
 		
 		//Flat part of arrow back
-		{((basexmax + basexmin)/2.0) ,(baseymax + 95.0), (basezmax - 2.0)},
-		{(basexmin - 25.0) ,(baseymax + 40.0) , (basezmax - 2.0)},
-		{(basexmax + 25.0) ,(baseymax + 40.0) , (basezmax - 2.0)},
+		{((basexmax + basexmin)/2.0) ,(baseymax + 105.0), (basezmax - 2.0)},
+		{(basexmin - 15.0) ,(baseymax + 30.0) , (basezmax - 2.0)},
+		{(basexmax + 15.0) ,(baseymax + 30.0) , (basezmax - 2.0)},
 		{basexmin ,baseymax, basezmax},
 		{basexmax ,baseymax, basezmax}
 	};
@@ -128,7 +128,7 @@ void Basic_Arrow::render_basic_arrow(float *color)
 	glUniform3fv(ppuLoc_kd, 1, color);
 
 	//Base Left Front Face
-	glVertexAttrib3f(pvaLoc_mcNormal, -1.0, 0.0, -1.0);
+	glVertexAttrib3f(pvaLoc_mcNormal, 1.0, 0.0, -1.0);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	//Base Left Back Face
@@ -210,7 +210,7 @@ void Basic_Arrow::render()
 	glUniformMatrix4fv(ppuLoc_ec_lds, 1, false, ec_lds.extractColMajor(mat));
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	renderTelevision(color);
+	render_basic_arrow(color);
 
 	glUseProgram(pgm);
 }

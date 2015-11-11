@@ -40,7 +40,7 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 	float zpp = zmax;
 	
 	cryph::Matrix4x4 M_ECu = cryph::Matrix4x4::lookAt(ModelView::eye, ModelView::center, ModelView::up);
-	mc_ec = dynamic_view M_ECu;
+	mc_ec = M_ECu;
 	
 	ec_lds = cryph::Matrix4x4::perspective( zpp,  -(xmax - xmin)/2, (xmax-xmin)/2,
 		-(ymax-ymin)/2,  (ymax-ymin)/2,  ecZmin,  ecZmax);

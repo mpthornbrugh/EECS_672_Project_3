@@ -7,8 +7,17 @@
 #include "Block.c++"
 #include "Sphere.h"
 #include "Sphere.c++"
+#include "Basic_Arrow.h"
+#include "Basic_Arrow.c++"
 
 typedef float vec3[3];
+
+void addBasicArrowHead(Controller &c, const cryph::AffPoint& connectionPoint)
+{
+    float color[3] = {0.0/255.0, 255.0/255.0, 0.0/255.0};
+
+    c.addModel(new Basic_Arrow(connectionPoint, color));
+}
 
 void addTelevision(Controller &c, const cryph::AffPoint& bottomLeftPoint, float width, float height, float depth, float depthScreen)
 {
@@ -203,7 +212,7 @@ void set3DViewingInformation(double xyz[6])
         if (delta > maxDelta)
             maxDelta = delta;
         double distEyeCenter = 2.0 * maxDelta;
-        cryph::AffPoint eye(xmid - 400.0, ymid + 200.0, zmid + 1.15*distEyeCenter);
+        cryph::AffPoint eye(xmid, ymid, zmid + 1.25*distEyeCenter);
         
 	cryph::AffVector up = cryph::AffVector::yu;
 
@@ -232,19 +241,10 @@ int main(int argc, char* argv[])
 
 	// create your scene, adding things to the Controller....
 	cryph::AffPoint p0(1320.0,0.0,0.0);
-	addBookcase(c, p0, 480.0, 480.0, 120.0);
+	addBasicArrowHead(c, p0);
 
-	p0.assign(720.0,0.0,0.0);
-	addBookcase(c, p0, 600.0, 480.0, 120.0);
-
-	cryph::AffPoint p1(1320.0, 0.0, 1320.0);
-	addBed(c, p1, 600.0, 840.0, 120.0, 120.0, 40.0);
-
-	cryph::AffPoint p2(1320.0,1080.0,660.0);
-	addFan(c, p2, 120.0, 240.0, 120.0, 120.0, 180.0);
-
-	p0.assign(1320.0,480.0,0.0);
-	addTelevision(c, p0, 480.0, 360.0, 60.0, 20.0);
+	cryph::AffPoint p1(1300.0,0.0,-50.0);
+	//addBookcase(c, p1, 480.0, 480.0, 120.0);
 
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 

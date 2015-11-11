@@ -19,8 +19,10 @@ public:
 	void getMCBoundingBox(double* xyzLimitsF) const;
 	void render();
 private:
+	GLuint vao[1];
+	GLuint vbo[1];
 	void define_basic_arrow();
-	void render_basic_arrow();
+	void render_basic_arrow(float *color);
 };
 
 #endif
