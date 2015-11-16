@@ -5,6 +5,8 @@ using namespace std;
 
 subController * subController::curControllerSub = NULL;
 
+bool mouse_down = false;
+
 subController::subController( const std::string& name, int glutRCFlags ) : Controller( name, glutRCFlags )
 {
   subController::curControllerSub = this;

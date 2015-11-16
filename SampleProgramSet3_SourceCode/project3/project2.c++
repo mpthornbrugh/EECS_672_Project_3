@@ -199,20 +199,20 @@ void set3DViewingInformation(double xyz[6])
 {
 	ModelView::setMCRegionOfInterest(xyz);
 
-        double xmid = 0.5 * (xyz[0] + xyz[1]);
-        double ymid = 0.5 * (xyz[2] + xyz[3]);
-        double zmid = 0.5 * (xyz[4] + xyz[5]);
-        cryph::AffPoint center(xmid, ymid, zmid);
-        
-        double maxDelta = xyz[1] - xyz[0];
-        double delta = xyz[3] - xyz[2];
-        if (delta > maxDelta)
-            maxDelta = delta;
-        delta = xyz[5] - xyz[4];
-        if (delta > maxDelta)
-            maxDelta = delta;
-        double distEyeCenter = 2.0 * maxDelta;
-        cryph::AffPoint eye(xmid, ymid, zmid + 1.25*distEyeCenter);
+    double xmid = 0.5 * (xyz[0] + xyz[1]);
+    double ymid = 0.5 * (xyz[2] + xyz[3]);
+    double zmid = 0.5 * (xyz[4] + xyz[5]);
+    cryph::AffPoint center(xmid, ymid, zmid);
+    
+    double maxDelta = xyz[1] - xyz[0];
+    double delta = xyz[3] - xyz[2];
+    if (delta > maxDelta)
+        maxDelta = delta;
+    delta = xyz[5] - xyz[4];
+    if (delta > maxDelta)
+        maxDelta = delta;
+    double distEyeCenter = 2.0 * maxDelta;
+    cryph::AffPoint eye(xmid, ymid, zmid + 1.25*distEyeCenter);
         
 	cryph::AffVector up = cryph::AffVector::yu;
 
@@ -223,13 +223,12 @@ void set3DViewingInformation(double xyz[6])
 	ModelView::setEyeCenterUp(eye, center, up);
 
 	double ecZpp = -(distEyeCenter - 0.5*maxDelta);
-        double ecZmin = ecZpp - maxDelta*2.0;
-        double ecZmax = ecZpp + 0.5*maxDelta;
+    double ecZmin = ecZpp - maxDelta;
+    double ecZmax = ecZpp + 0.5*maxDelta;
 
 	// Set values for ecZpp, ecZmin, ecZmax that make sense in the context of
 	// the EC system established above, then:
 
-	ModelView::setProjection(PERSPECTIVE);
 	ModelView::setProjectionPlaneZ(ecZpp);
 	ModelView::setECZminZmax(ecZmin, ecZmax);
 }

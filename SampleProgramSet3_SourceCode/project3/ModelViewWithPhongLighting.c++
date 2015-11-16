@@ -13,11 +13,24 @@
 ShaderIF* ModelViewWithPhongLighting::shaderIF = NULL;
 int ModelViewWithPhongLighting::numInstances = 0;
 GLuint ModelViewWithPhongLighting::shaderProgram = 0;
-GLint ModelViewWithPhongLighting::pvaLoc_mcPosition = -2;
-GLint ModelViewWithPhongLighting::pvaLoc_mcNormal = -2;
-GLint ModelViewWithPhongLighting::ppuLoc_kd = -2;
+
 GLint ModelViewWithPhongLighting::ppuLoc_mc_ec = -2;
 GLint ModelViewWithPhongLighting::ppuLoc_ec_lds = -2;
+
+GLint ModelViewWithPhongLighting::pvaLoc_mcPosition = -2;
+GLint ModelViewWithPhongLighting::pvaLoc_mcNormal = -2;
+
+GLint ModelViewWithPhongLighting::ppuLoc_lightPosition = -1;
+GLint ModelViewWithPhongLighting::ppuLoc_lightStrength = -1;
+GLint ModelViewWithPhongLighting::ppuLoc_actualNumLights = -1;
+GLint ModelViewWithPhongLighting::ppuLoc_globalAmbient = -1;
+GLint ModelViewWithPhongLighting::ppuLoc_ka = -2;
+GLint ModelViewWithPhongLighting::ppuLoc_kd = -2;
+GLint ModelViewWithPhongLighting::ppuLoc_ks = -2;
+GLint ModelViewWithPhongLighting::ppuLoc_m = -2;
+
+int ModelViewWithPhongLighting::lastMousePosition[2] = { 0, 0 };
+bool ModelViewWithPhongLighting::mouseIsDown = false;
 
 std::string ModelViewWithPhongLighting::vShaderSource = "simple3d.vsh";
 std::string ModelViewWithPhongLighting::fShaderSource = "simple3d.fsh";
@@ -50,7 +63,10 @@ void ModelViewWithPhongLighting::fetchGLSLVariableLocations()
 	{
 		pvaLoc_mcPosition = pvAttribLocation(shaderProgram, "mcPosition");
 		pvaLoc_mcNormal = pvAttribLocation(shaderProgram, "mcNormal");
+		ppuLoc_ka = ppUniformLocation(shaderProgram, "ka");
 		ppuLoc_kd = ppUniformLocation(shaderProgram, "kd");
+		ppuLoc_ks = ppUniformLocation(shaderProgram, "ks");
+		ppuLoc_m = ppUniformLocation(shaderProgram, "m");
 		ppuLoc_mc_ec = ppUniformLocation(shaderProgram, "mc_ec");
 		ppuLoc_ec_lds = ppUniformLocation(shaderProgram, "ec_lds");
 	}
