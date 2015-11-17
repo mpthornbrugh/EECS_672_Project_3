@@ -15,20 +15,34 @@ void ModelView::addToGlobalZoom(double increment)
 void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 {
 	double zoomAmount = ModelView::dynamic_zoomScale/2.0;
-	
-	double xmin = ModelView::mcRegionOfInterest[0] - zoomAmount;
-	double xmax = ModelView::mcRegionOfInterest[1] + zoomAmount;
-	double ymin = ModelView::mcRegionOfInterest[2] - zoomAmount;
-	double ymax = ModelView::mcRegionOfInterest[3] + zoomAmount;
+
+	double dx = 0.5 * (mcRegionOfInterest[1] - mcRegionOfInterest[0]);
+	double dy = 0.5 * (mcRegionOfInterest[3] - mcRegionOfInterest[2]);
+	double dz = 0.5 * (mcRegionOfInterest[5] - mcRegionOfInterest[4]);
+	double radius = sqrt(dx*dx + dy*dy + dz*dz);
+
+	double ecXmin = -radius, ecXmax = radius;
+	double ecYmin = -radius, ecYmax = radius;
 
 	double vAR = Controller::getCurrentController()->getViewportAspectRatio();
-	ModelView::matchAspectRatio(xmin, xmax, ymin, ymax, vAR);
+	matchAspectRatio(ecXmin, ecXmax, ecYmin, ecYmax, vAR);
 	
 	cryph::Matrix4x4 M_ECu = cryph::Matrix4x4::lookAt(ModelView::eye, ModelView::center, ModelView::up);
 	mc_ec = dynamic_view * M_ECu;
-	
-	ec_lds = cryph::Matrix4x4::perspective( ModelView::ecZpp,  -(xmax - xmin)/2, (xmax-xmin)/2,
-		-(ymax-ymin)/2,  (ymax-ymin)/2,  ModelView::ecZmin,  ModelView::ecZmax);
+
+	//Scall both widths by dynamic zoom
+	ecXmin -= zoomAmount;
+	ecXmax += zoomAmount;
+	ecYmin -= zoomAmount;
+	ecYmax += zoomAmount;
+
+	if (projType == ORTHOGONAL)
+		ec_lds = cryph::Matrix4x4::orthogonal(ecXmin, ecXmax, ecYmin, ecYmax, ecZmin, ecZmax);
+	else if (projType == PERSPECTIVE)
+		ec_lds = cryph::Matrix4x4::perspective(ecZpp, ecXmin, ecXmax, ecYmin, ecYmax, ecZmin, ecZmax);
+	else // Must be OBLIQUE
+		ec_lds = cryph::Matrix4x4::oblique(ecZpp, ecXmin, ecXmax, ecYmin, ecYmax, ecZmin, ecZmax,
+		                                   obliqueProjectionDir);
 
 	// TODO:
 	// 1. Create the mc_ec matrix:

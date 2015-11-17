@@ -116,7 +116,7 @@ void Sphere::tetrahedron( int count )
   divide_triangle( v[3], v[2], v[1], count );
   divide_triangle( v[0], v[3], v[1], count );
   divide_triangle( v[0], v[2], v[3], count );
-} /* end Sphere::tetrahedron() */
+} 
 
 
 
@@ -132,7 +132,7 @@ void Sphere::tri( const vec3& veca,const vec3& vecb,const vec3& vecc,int& Index)
   normal.vComponents( _normals[Index] ); a.vComponents( _points[Index] ); Index++;
   normal.vComponents( _normals[Index] ); b.vComponents( _points[Index] ); Index++;
   normal.vComponents( _normals[Index] ); c.vComponents( _points[Index] ); Index++;
-} /* end GeneralMV::tri() */
+} 
 
 
 
@@ -174,4 +174,4 @@ void Sphere::divide_triangle( const vec3& a, const vec3& b, const vec3& c, int c
 	}
       tri( aa, bb, cc, _Index );
     }
-} /* end Sphere::divide_triangle() */
+} 
