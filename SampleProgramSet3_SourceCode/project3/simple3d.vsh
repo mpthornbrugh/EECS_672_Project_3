@@ -29,6 +29,10 @@ uniform mat4 ec_lds = // (W-V map) * (projection matrix)
 uniform vec3 kd = // "kd" - diffuse reflectivity; basic object color
 	vec3(0.8, 0.0, 0.0); // default: darkish red
 
+uniform vec3 ka = vec3(0.0, 0.8, 0.0);
+
+uniform vec3 ks = vec3(0.0, 0.0, 0.8);
+
 // There are also MANY ways to deal with light sources (number, type,
 // strength, etc.).  For now we simply assume one directional source.
 // You will generalize this in future projects.

@@ -8,12 +8,13 @@
 class Basic_Arrow : public ModelViewWithPhongLighting
 {
 public:
-	Basic_Arrow(const cryph::AffPoint& connection, float inColor[3]);
+	Basic_Arrow(const cryph::AffPoint& connection, const cryph::Matrix4x4 &transformationMat, float inColor[3]);
 	virtual ~Basic_Arrow();
 	
 	cryph::AffPoint point;
 	float bounds[6];
 	float color[3];
+	cryph::Matrix4x4 transMat;
 
 	// xyzLimits: {mcXmin, mcXmax, mcYmin, mcYmax, mcZmin, mcZmax}
 	void getMCBoundingBox(double* xyzLimitsF) const;

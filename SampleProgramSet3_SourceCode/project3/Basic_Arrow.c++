@@ -3,7 +3,7 @@
 #include "Basic_Arrow.h"
 #include "ShaderIF.h"
 
-Basic_Arrow::Basic_Arrow(const cryph::AffPoint& connection, float inColor[3])
+Basic_Arrow::Basic_Arrow(const cryph::AffPoint& connection, const cryph::Matrix4x4 &transformationMat, float inColor[3])
 {
 	
 	bounds[0] = connection.x - 35.0;
@@ -13,6 +13,7 @@ Basic_Arrow::Basic_Arrow(const cryph::AffPoint& connection, float inColor[3])
 	bounds[4] = connection.z - 25.0;
 	bounds[5] = connection.z + 25.0;
 	point = connection;
+	transMat = transformationMat;
 	color[0] = inColor[0];
 	color[1] = inColor[1];
 	color[2] = inColor[2];
@@ -92,6 +93,10 @@ void Basic_Arrow::define_basic_arrow()
 		{basexmin ,baseymax, basezmax},
 		{basexmax ,baseymax, basezmax}
 	};
+
+	for (int i = 0; i < 48; i++) {
+		vtx[i] = vtx[i] * transMat;
+	}
 	
 	glGenVertexArrays(1, vao);
 	glBindVertexArray(vao[0]);
@@ -125,7 +130,9 @@ void Basic_Arrow::getMCBoundingBox(double* xyzLimits) const
 void Basic_Arrow::render_basic_arrow(float *color)
 {
 	glBindVertexArray(vao[0]);
-	glUniform3fv(ppuLoc_kd, 1, color);
+	glUniform3fv(ppuLoc_kd, 1, color);	
+	glUniform3fv(ppuLoc_ka, 1, color);
+	glUniform3fv(ppuLoc_ks, 1, color);
 
 	//Base Left Front Face
 	glVertexAttrib3f(pvaLoc_mcNormal, 1.0, 0.0, -1.0);
