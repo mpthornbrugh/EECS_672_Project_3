@@ -21,6 +21,7 @@ public:
 	virtual ~ModelViewWithPhongLighting();
 
 	static void setShaderSources(const std::string& vShader, const std::string& fShader);
+	static void establishLights();
 
 protected:
 
@@ -33,6 +34,7 @@ protected:
 	static GLint ppuLoc_ks;
 	static GLint ppuLoc_m;
 	static GLint ppuLoc_mc_ec, ppuLoc_ec_lds;
+	static GLint ppuLoc_eye;
 
 	static void fetchGLSLVariableLocations();
 

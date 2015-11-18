@@ -2,41 +2,15 @@
 
 // simple3d.vsh - A simplistic vertex shader that illustrates ONE WAY
 //                to handle transformations along with a simple 3D
-//                lighting model.
+//                lighting model.             
 
-// Naming convention for variables holding coordinates:
-// mc - model coordinates
-// ec - eye coordinates
-// lds - logical device space
-// "p_" prefix on any of the preceding indicates the coordinates have been
-//      embedded in projective space
-// (gl_Position would be called something like: p_ldsPosition)
-
-// Transformation Matrices
-uniform mat4 mc_ec =   // (dynamic rotations) * (ViewOrientation(E,C,up))
-	mat4(1.0, 0.0, 0.0, 0.0, // initialize to identity matrix
-	     0.0, 1.0, 0.0, 0.0, // ==> no dynamic rotations -AND- MC = EC
-	     0.0, 0.0, 1.0, 0.0,
-	     0.0, 0.0, 0.0, 1.0);
-uniform mat4 ec_lds = // (W-V map) * (projection matrix)
-	mat4(1.0, 0.0, 0.0, 0.0, // initialize to (almost) identity matrix
-	     0.0, 1.0, 0.0, 0.0, // ==> ORTHOGONAL projection -AND- EC = LDS
-	     0.0, 0.0, -1.0, 0.0,
-	     0.0, 0.0, 0.0, 1.0);
-             
-// There are MANY ways to deal with the basic object color.
-// For now we will  simply assume:
-uniform vec3 kd = // "kd" - diffuse reflectivity; basic object color
-	vec3(0.8, 0.0, 0.0); // default: darkish red
-
-uniform vec3 ka = vec3(0.0, 0.8, 0.0);
-
-uniform vec3 ks = vec3(0.0, 0.0, 0.8);
-
-// There are also MANY ways to deal with light sources (number, type,
-// strength, etc.).  For now we simply assume one directional source.
-// You will generalize this in future projects.
-uniform vec4 p_ecLightSource = vec4(0.7, 0.2, 1.0, 0.0);
+const int MAX_NUM_LIGHTS = 3;
+uniform vec4 p_ecLightPos[MAX_NUM_LIGHTS];
+uniform vec3 lightStrength[MAX_NUM_LIGHTS];
+uniform vec3 globalAmbient;
+uniform vec3 ka, kd, ks;
+uniform float m = 1.0;
+uniform mat4 ec_lds;
 
 // Per-vertex attributes
 // 1. incoming vertex position in model coordinates
@@ -48,6 +22,33 @@ out vec3 colorToFS;
 
 vec3 evaluateLightingModel(in vec3 ec_Q, in vec3 ec_nHat)
 {
+	// Create a unit vector towards the viewer (method depends on type of projection!)
+    // NOTE: GLSL matrices are indexed as M[col][row]!!!
+    …
+
+    // if we are viewing this point "from behind", we need to negate the incoming
+    // normal vector since our lighting model expressions implicitly assume the normal
+    // vector points toward the same side of the triangle that the eye is on.
+    …
+
+    for (int i = 0 ; i < 3 ; i++)
+    {
+        // if light is behind this object, skip this light source
+        // else:
+        //     1. compute and accumulate diffuse contribution
+        //     2. if viewer on appropriate side of normal vector,
+        //        compute and accumulate specular contribution.
+    }
+
+
+
+
+
+	float factor = ka * la;
+	for (int i = 0; i < numLights; i++) {
+		factor += 
+	}
+
 	// Simplistic lighting model:
 	// Reflected color will be a function of angle between the normal
 	// vector and the light source direction. Specifically:
@@ -55,6 +56,8 @@ vec3 evaluateLightingModel(in vec3 ec_Q, in vec3 ec_nHat)
 	// NOTE: The use of "abs" here is a temporary hack. As we study
 	//       lighting models more carefully, we will REMOVE "abs" while
 	//       incorporating more sophisticated processing.
+
+	//Iq = Ka * La + sum( Fi(Q) Li )
 
 	float factor = abs(dot(normalize(p_ecLightSource.xyz), ec_nHat));
 

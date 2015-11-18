@@ -129,10 +129,13 @@ void Basic_Arrow::getMCBoundingBox(double* xyzLimits) const
 
 void Basic_Arrow::render_basic_arrow(float *color)
 {
+	float m = 5.0;
+
 	glBindVertexArray(vao[0]);
 	glUniform3fv(ppuLoc_kd, 1, color);	
 	glUniform3fv(ppuLoc_ka, 1, color);
 	glUniform3fv(ppuLoc_ks, 1, color);
+	glUniform1f (uLoc_m, m);
 
 	//Base Left Front Face
 	glVertexAttrib3f(pvaLoc_mcNormal, 1.0, 0.0, -1.0);
