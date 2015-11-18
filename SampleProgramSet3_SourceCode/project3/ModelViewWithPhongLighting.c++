@@ -54,10 +54,10 @@ void ModelViewWithPhongLighting::establishLights()
 
     // Now send the EC geometric description along with the non-geometric data:
     int numLights = 3;
-    glUniform4fv(uLoc_p_ecLightPos, numLights, lightPositionInEC);
-    glUniform3fv(uLoc_lightStrength, numLights, lightStrength);
-    glUniform1i(uLoc_actualNumLights, numLights);
-    glUniform3fv(uLoc_globalAmbient, 1, ambientStrength);
+    glUniform4fv(ppuLoc_p_ecLightPos, numLights, lightPositionInEC);
+    glUniform3fv(ppuLoc_lightStrength, numLights, lightStrength);
+    glUniform1i(ppuLoc_actualNumLights, numLights);
+    glUniform3fv(ppuLoc_globalAmbient, 1, ambientStrength);
 }
 
 ModelViewWithPhongLighting::ModelViewWithPhongLighting()
