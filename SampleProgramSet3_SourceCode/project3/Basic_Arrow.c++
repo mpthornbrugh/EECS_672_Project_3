@@ -95,7 +95,8 @@ void Basic_Arrow::define_basic_arrow()
 	};
 
 	for (int i = 0; i < 48; i++) {
-		vtx[i] = vtx[i] * transMat;
+		//This needs work
+		//vtx[i] = vtx[i] * transMat;
 	}
 	
 	glGenVertexArrays(1, vao);
