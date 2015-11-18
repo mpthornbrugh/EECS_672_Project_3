@@ -136,7 +136,7 @@ void Basic_Arrow::render_basic_arrow(float *color)
 	glUniform3fv(ppuLoc_kd, 1, color);	
 	glUniform3fv(ppuLoc_ka, 1, color);
 	glUniform3fv(ppuLoc_ks, 1, color);
-	glUniform1f (uLoc_m, m);
+	glUniform1f (ppuLoc_m, m);
 
 	//Base Left Front Face
 	glVertexAttrib3f(pvaLoc_mcNormal, 1.0, 0.0, -1.0);
