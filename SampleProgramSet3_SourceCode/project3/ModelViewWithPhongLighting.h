@@ -35,6 +35,7 @@ protected:
 	static GLint ppuLoc_m;
 	static GLint ppuLoc_mc_ec, ppuLoc_ec_lds;
 	static GLint ppuLoc_eye;
+	static GLint ppuLoc_p_ecLightPos, ppuLoc_lightStrength, ppuLoc_actualNumLights, ppuLoc_globalAmbient;
 
 	static void fetchGLSLVariableLocations();
 

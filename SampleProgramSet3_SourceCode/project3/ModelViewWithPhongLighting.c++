@@ -29,6 +29,11 @@ GLint ModelViewWithPhongLighting::ppuLoc_m = -2;
 
 GLint ModelViewWithPhongLighting::ppuLoc_eye = -2;
 
+GLint ModelViewWithPhongLighting::ppuLoc_p_ecLightPos = -2;
+GLint ModelViewWithPhongLighting::ppuLoc_lightStrength = -2;
+GLint ModelViewWithPhongLighting::ppuLoc_actualNumLights = -2;
+GLint ModelViewWithPhongLighting::ppuLoc_globalAmbient = -2;
+
 std::string ModelViewWithPhongLighting::vShaderSource = "simple3d.vsh";
 std::string ModelViewWithPhongLighting::fShaderSource = "simple3d.fsh";
 
@@ -47,7 +52,7 @@ float ambientStrength[ ] = { 0.15, 0.15, 0.15 }; // assumed ambient light
 void ModelViewWithPhongLighting::establishLights()
 {
     // If light sources defined in MC, transform them to EC:
-	
+	float lightPositionInEC[] = lightPosition;
 
     // Now send the EC geometric description along with the non-geometric data:
     int numLights = 3;
