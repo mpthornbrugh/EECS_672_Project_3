@@ -52,7 +52,11 @@ float ambientStrength[ ] = { 0.15, 0.15, 0.15 }; // assumed ambient light
 void ModelViewWithPhongLighting::establishLights()
 {
     // If light sources defined in MC, transform them to EC:
-	float lightPositionInEC[] = lightPosition;
+	float lightPositionInEC[12];
+
+	for (int i = 0; i < 12; i++) {
+		lightPositionInEC[i] = lightPosition[i];
+	}
 
     // Now send the EC geometric description along with the non-geometric data:
     int numLights = 3;
