@@ -36,8 +36,6 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 	ecYmin -= zoomAmount;
 	ecYmax += zoomAmount;
 
-	std::cout << ecZpp << " " << ecXmin << " " << ecXmax << " " << ecYmin << " " << ecYmax << " " << ecZmin << " " << ecZmax << std::endl;
-
 	if (projType == ORTHOGONAL)
 		ec_lds = cryph::Matrix4x4::orthogonal(ecXmin, ecXmax, ecYmin, ecYmax, ecZmin, ecZmax);
 	else if (projType == PERSPECTIVE)
