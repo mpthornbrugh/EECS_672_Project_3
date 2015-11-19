@@ -10,6 +10,8 @@
 #include "ModelViewWithPhongLighting.h"
 #include "ShaderIF.h"
 
+typedef float vec4[4];
+
 ShaderIF* ModelViewWithPhongLighting::shaderIF = NULL;
 int ModelViewWithPhongLighting::numInstances = 0;
 GLuint ModelViewWithPhongLighting::shaderProgram = 0;
