@@ -37,7 +37,7 @@ GLint ModelViewWithPhongLighting::ppuLoc_globalAmbient = -2;
 std::string ModelViewWithPhongLighting::vShaderSource = "simple3d.vsh";
 std::string ModelViewWithPhongLighting::fShaderSource = "simple3d.fsh";
 
-vec4 lightPosition[ ] = {
+vec4 lightPosition[3] = {
 	vec4(-1.0, 0.0, 1.0, 0.0),
 	vec4(0.0, 1.0, 1.0, 0.0),
 	vec4(140.5, -133.0, 200.0, 1.0)
