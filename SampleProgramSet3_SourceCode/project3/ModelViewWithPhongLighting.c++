@@ -51,6 +51,9 @@ float ambientStrength[ ] = { 0.15, 0.15, 0.15 }; // assumed ambient light
 
 void ModelViewWithPhongLighting::establishLights()
 {
+	cryph::Matrix4x4 mc_ec, ec_lds;
+	getMatrices(mc_ec, ec_lds);
+	
     // If light sources defined in MC, transform them to EC:
 	float lightPositionInEC[12];
 
