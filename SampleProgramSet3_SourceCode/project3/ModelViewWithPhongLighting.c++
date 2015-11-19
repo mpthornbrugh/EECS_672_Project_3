@@ -51,7 +51,7 @@ void ModelViewWithPhongLighting::establishLights()
 
     // If light sources defined in MC, transform them to EC:
 	for (int i = 0; i < 3; i++) {
-		vec4 newPoint = ModelView::mc_ec * vec4(lightPosition[(i*4)], lightPosition[(i*4)+1], lightPosition[(i*4)+2], 1.0);
+		vec4 newPoint = mc_ec * vec4(lightPosition[(i*4)], lightPosition[(i*4)+1], lightPosition[(i*4)+2], 1.0);
 		lightPosition[(i*4)] = newPoint.x;
 		lightPosition[(i*4)+1] = newPoint.y;
 		lightPosition[(i*4)+2] = newPoint.z;
