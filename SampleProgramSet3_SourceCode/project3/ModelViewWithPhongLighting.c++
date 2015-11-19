@@ -37,11 +37,17 @@ GLint ModelViewWithPhongLighting::ppuLoc_globalAmbient = -2;
 std::string ModelViewWithPhongLighting::vShaderSource = "simple3d.vsh";
 std::string ModelViewWithPhongLighting::fShaderSource = "simple3d.fsh";
 
-float lightPosition[ ] = {
-   -1.0, 0.0, 1.0, 0.0, // source 0: directional
-   0.0, 1.0, 1.0, 0.0,  // source 1: directional
-   140.5, -133.0, 200.0, 1.0 // source 2: an actual location in the scene
-   };
+vec4 lightPosition[ ] = {
+	vec4(-1.0, 0.0, 1.0, 0.0),
+	vec4(0.0, 1.0, 1.0, 0.0),
+	vec4(140.5, -133.0, 200.0, 1.0)
+}
+
+// float lightPosition[ ] = {
+//    -1.0, 0.0, 1.0, 0.0, // source 0: directional
+//    0.0, 1.0, 1.0, 0.0,  // source 1: directional
+//    140.5, -133.0, 200.0, 1.0 // source 2: an actual location in the scene
+//    };
 float lightStrength[ ] = {
    1.0, 1.0, 1.0, // source 0: full strength white
    0.4, 0.4, 0.4, // source 1: 40% white
@@ -53,11 +59,11 @@ void ModelViewWithPhongLighting::establishLights()
 {
 	cryph::Matrix4x4 mc_ec, ec_lds;
 	getMatrices(mc_ec, ec_lds);
-	
-    // If light sources defined in MC, transform them to EC:
-	float lightPositionInEC[12];
 
-	for (int i = 0; i < 12; i++) {
+    // If light sources defined in MC, transform them to EC:
+	vec4 lightPositionInEC[3];
+
+	for (int i = 0; i < 3; i++) {
 		lightPositionInEC[i] = lightPosition[i];
 	}
 

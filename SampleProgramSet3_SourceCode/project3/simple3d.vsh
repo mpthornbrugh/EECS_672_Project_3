@@ -9,6 +9,7 @@ uniform vec4 p_ecLightPos[MAX_NUM_LIGHTS];
 uniform vec3 lightStrength[MAX_NUM_LIGHTS];
 uniform vec3 globalAmbient;
 uniform vec3 ka, kd, ks;
+uniform vec3 eye;
 uniform float m = 1.0;
 uniform mat4 ec_lds;
 
@@ -24,20 +25,37 @@ vec3 evaluateLightingModel(in vec3 ec_Q, in vec3 ec_nHat)
 {
 	// Create a unit vector towards the viewer (method depends on type of projection!)
     // NOTE: GLSL matrices are indexed as M[col][row]!!!
-    vec3 vHat = 
+    cryph::AffVector vHat = normalize(eye - ec_Q);
 
     // if we are viewing this point "from behind", we need to negate the incoming
     // normal vector since our lighting model expressions implicitly assume the normal
     // vector points toward the same side of the triangle that the eye is on.
-    …
+    if (dot(ec_nHat, vHat) > 90 || dot(ec_nHat, vHat) < -90) {
+    	ec_nHat = -1.0 * ec_nHat;
+    }
 
-    for (int i = 0 ; i < 3 ; i++)
+    cryph::AffVector vHatParallel, vHatPerpendicular;
+
+    decompose(vHat, vHatParallel, vHatPerpendicular);
+
+    for (int i = 0 ; i < MAX_NUM_LIGHTS ; i++)
     {
-        // if light is behind this object, skip this light source
-        // else:
-        //     1. compute and accumulate diffuse contribution
-        //     2. if viewer on appropriate side of normal vector,
-        //        compute and accumulate specular contribution.
+    	if (p_ecLightPos[i].a > 0.0) {//Positional light
+    		cryph::AffVector lightParallel, lightPerpendicular;
+	    	cryph::AffVector li = normalize(ec_Q - p_ecLightPos[i]);
+
+	    	decompose(li, lightParallel, lightPerpendicular);
+
+	    	//Compute diffuse contribution
+
+	    	if (dot(lightParallel, vHatParallel) >= 90 || dot(lightParallel, vHatParallel) <= -90) {//Viewer is on right side
+	    		//Compute specular contribution
+	    	}
+    	}
+    	else { //Directional Light
+    		//Compute diffuse contribution
+    		//Compute specular contribution
+    	}
     }
 
 
