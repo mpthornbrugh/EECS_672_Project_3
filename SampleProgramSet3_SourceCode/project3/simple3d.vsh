@@ -24,7 +24,7 @@ vec3 evaluateLightingModel(in vec3 ec_Q, in vec3 ec_nHat)
 {
 	// Create a unit vector towards the viewer (method depends on type of projection!)
     // NOTE: GLSL matrices are indexed as M[col][row]!!!
-    …
+    vec3 vHat = 
 
     // if we are viewing this point "from behind", we need to negate the incoming
     // normal vector since our lighting model expressions implicitly assume the normal

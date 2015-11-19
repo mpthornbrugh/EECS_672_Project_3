@@ -31,9 +31,9 @@ std::string ModelViewWithPhongLighting::vShaderSource = "simple3d.vsh";
 std::string ModelViewWithPhongLighting::fShaderSource = "simple3d.fsh";
 
 float lightPosition[ ] = {
-   –1.0, 0.0, 1.0, 0.0, // source 0: directional
+   -1.0, 0.0, 1.0, 0.0, // source 0: directional
    0.0, 1.0, 1.0, 0.0,  // source 1: directional
-   140.5, –133.0, 200.0, 1.0 // source 2: an actual location in the scene
+   140.5, -133.0, 200.0, 1.0 // source 2: an actual location in the scene
    };
 float lightStrength[ ] = {
    1.0, 1.0, 1.0, // source 0: full strength white
