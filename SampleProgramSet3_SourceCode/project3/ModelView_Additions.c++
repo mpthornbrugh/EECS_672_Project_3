@@ -15,6 +15,7 @@ void ModelView::addToGlobalZoom(double increment)
 void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 {
 	double zoomAmount = ModelView::dynamic_zoomScale/2.0;
+	std::cout < "zoomAmount: " << zoomAmount << std::endl;
 
 	double dx = 0.5 * (mcRegionOfInterest[1] - mcRegionOfInterest[0]);
 	double dy = 0.5 * (mcRegionOfInterest[3] - mcRegionOfInterest[2]);
