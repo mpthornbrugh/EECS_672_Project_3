@@ -46,6 +46,9 @@ float ambientStrength[ ] = { 0.15, 0.15, 0.15 }; // assumed ambient light
 
 void ModelViewWithPhongLighting::establishLights()
 {
+	cryph::Matrix4x4 M_ECu = cryph::Matrix4x4::lookAt(ModelView::eye, ModelView::center, ModelView::up);
+	cryph::Matrix4x4 mc_ec = dynamic_view * M_ECu;
+
     // If light sources defined in MC, transform them to EC:
 	for (int i = 0; i < 3; i++) {
 		vec4 newPoint = ModelView::mc_ec * vec4(lightPosition[(i*4)], lightPosition[(i*4)+1], lightPosition[(i*4)+2], 1.0);
