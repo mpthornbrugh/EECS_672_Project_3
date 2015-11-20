@@ -23,6 +23,10 @@ public:
 	static void setShaderSources(const std::string& vShader, const std::string& fShader);
 	static void establishLights();
 
+	static void handleMouseMotion( int x, int y );
+	static void handleMouseFunc( int button, int state, int x, int y );
+	static void handleScroll(bool isZommIn);
+
 protected:
 
 	static ShaderIF* shaderIF;
