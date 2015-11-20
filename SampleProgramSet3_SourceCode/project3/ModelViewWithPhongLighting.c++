@@ -6,6 +6,7 @@
 #include "AffPoint.h"
 #include "AffVector.h"
 #include "Matrix4x4.h"
+#include "ProjectionType.h"
 
 #include "ModelViewWithPhongLighting.h"
 #include "ShaderIF.h"
