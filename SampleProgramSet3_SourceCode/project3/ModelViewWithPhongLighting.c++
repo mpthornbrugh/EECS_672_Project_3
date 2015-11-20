@@ -40,6 +40,8 @@ std::string ModelViewWithPhongLighting::fShaderSource = "simple3d.fsh";
 
 int ModelViewWithPhongLighting::lastMousePosition[2] = { 0, 0 };
 
+bool ModelViewWithPhongLighting::mouseIsDown = false;
+
 float lightPosition[ ] = {
    -1.0, 0.0, 1.0, 0.0, // source 0: directional
    0.0, 1.0, 1.0, 0.0,  // source 1: directional
