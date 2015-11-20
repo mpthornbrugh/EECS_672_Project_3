@@ -1,6 +1,8 @@
 // project2.c++: Starter for EECS 672 Project 2
 
 #include "GLFWController.h"
+#include "myC.h"
+#include "myC.c++"
 #include "Bedfeet.h"
 #include "Bedfeet.c++"
 #include "Block.h"
