@@ -13,6 +13,7 @@
 #include "ModelView.h"
 #include "ShaderIF.h"
 #include "Matrix4x4.h"
+#include "ProjectionType.h"
 
 class ModelViewWithPhongLighting : public ModelView
 {
@@ -45,6 +46,8 @@ protected:
 
 private:
 	static std::string vShaderSource, fShaderSource;
+
+	static ProjectionType projType;
 
 	static bool mouseIsDown;
 	static double scale;
