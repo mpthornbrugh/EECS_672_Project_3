@@ -41,6 +41,10 @@ protected:
 
 private:
 	static std::string vShaderSource, fShaderSource;
+
+	static bool mouseIsDown;
+	static double scale;
+	static int lastMousePosition[2];
 };
 
 #endif

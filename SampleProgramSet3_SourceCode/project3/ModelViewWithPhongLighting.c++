@@ -37,6 +37,9 @@ GLint ModelViewWithPhongLighting::ppuLoc_globalAmbient = -2;
 std::string ModelViewWithPhongLighting::vShaderSource = "simple3d.vsh";
 std::string ModelViewWithPhongLighting::fShaderSource = "simple3d.fsh";
 
+int ModelViewWithPhongLighting::lastMousePosition[2] = { 0, 0 };
+ModelViewWithPhongLighting::PROJECTION_TYPE ModelViewWithPhongLighting::projType = PERSPECTIVE;
+
 float lightPosition[ ] = {
    -1.0, 0.0, 1.0, 0.0, // source 0: directional
    0.0, 1.0, 1.0, 0.0,  // source 1: directional
@@ -53,7 +56,7 @@ void ModelViewWithPhongLighting::establishLights()
 {
 	cryph::Matrix4x4 mc_ec, ec_lds;
 	getMatrices(mc_ec, ec_lds);
-	
+
     // If light sources defined in MC, transform them to EC:
 	float lightPositionInEC[12];
 
@@ -112,3 +115,57 @@ void ModelViewWithPhongLighting::setShaderSources(const std::string& vShaderSrc,
 	vShaderSource = vShaderSrc;
 	fShaderSource = fShaderSrc;
 }
+
+void ModelViewWithPhongLighting::handleMouseMotion( int x, int y )
+{
+	if (!mouseIsDown) {
+		lastMousePosition[0] = x;
+		lastMousePosition[1] = y;
+		mouseIsDown = false;
+		return;
+	}
+
+	double rxDeg = (static_cast<double>(x - lastMousePosition[0])) * (360.0/500.0);
+	double ryDeg = (static_cast<double>(y - lastMousePosition[1])) * (360.0/500.0);
+
+	addToGlobalRotationDegrees(rxDeg, ryDeg, 0);
+
+	lastMousePosition[0] = x;
+	lastMousePosition[1] = y;
+}
+
+void ModelViewWithPhongLighting::handleMouseFunc( int button, int state, int x, int y )
+{
+	if (button == Controller::LEFT_BUTTON) {
+		mouseIsDown = true;
+		lastMousePosition[0] = x;
+		lastMousePosition[1] = y;
+	}
+	else {
+		mouseIsDown = false;
+	}
+}
+
+void ModelViewWithPhongLighting::handleScroll(bool isZommIn)
+{
+	if (isZommIn) {
+		addToGlobalZoom(0.1);
+	}
+	else {
+		addToGlobalZoom(-0.1);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
