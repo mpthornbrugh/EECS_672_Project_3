@@ -39,7 +39,6 @@ std::string ModelViewWithPhongLighting::vShaderSource = "simple3d.vsh";
 std::string ModelViewWithPhongLighting::fShaderSource = "simple3d.fsh";
 
 int ModelViewWithPhongLighting::lastMousePosition[2] = { 0, 0 };
-PROJECTION_TYPE ModelViewWithPhongLighting::projType = PERSPECTIVE;
 
 float lightPosition[ ] = {
    -1.0, 0.0, 1.0, 0.0, // source 0: directional

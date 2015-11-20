@@ -47,8 +47,6 @@ protected:
 private:
 	static std::string vShaderSource, fShaderSource;
 
-	static ProjectionType projType;
-
 	static bool mouseIsDown;
 	static double scale;
 	static int lastMousePosition[2];
