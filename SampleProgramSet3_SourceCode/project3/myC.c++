@@ -1,51 +1,30 @@
-// GLFWController.c++: a basic GLFWController (in Model-View-GLFWController sense)
+#include "myC.h"
+#include "Matrix4x4.h"
 
-#include <stdlib.h>
+using namespace std;
 
-#include "GLFWController.h"
-#include "ModelView.h"
+myC * myC::curControllerSub = NULL;
 
-bool GLFWController::glfwInitialized = false;
-
-myC::myC(const std::string& windowTitle, int rcFlags) :
-	returnFromRun(false), runWaitsForAnEvent(true),
-	lastPixelPosX(0), lastPixelPosY(0)
+myC::myC( const std::string& name, int glutRCFlags )
+  :
+  Controller( name, glutRCFlags )
 {
-	buttonPressed = false;
-	if (!glfwInitialized)
-	{
-		glfwInit();
-		glfwInitialized = true;
-	}
-
-	// First create the window and its Rendering Context (RC)
-	createWindowAndRC(windowTitle, rcFlags);
-}
+  myC::curControllerSub = this;
+  establishInitialCallbacksForRC();
+} 
 
 myC::~myC()
 {
-	// IF THIS IS THE LAST CONTROLLER
-	{
-		glfwTerminate();
-		glfwInitialized = false;
-	}
-}
+  if( this == curControllerSub )
+    curControllerSub = NULL;
+} 
 
-void myC::mouseFuncCB(GLFWwindow* window, int button, int action, int mods)
-{
-	if (curController != NULL)
-	{
-		Controller::MouseButton mButton;
-		if (button == GLFW_MOUSE_BUTTON_LEFT)
-			mButton = Controller::LEFT_BUTTON;
-		else
-			GLFWController::mouseFuncCB(window, button, action, mods);
-		buttonPressed = (action == GLFW_PRESS);
-		myC* c = dynamic_cast<myC*>(curController);
-		c->handleMouseButton(
-			mButton, buttonPressed, c->lastPixelPosX, c->lastPixelPosY, mapMods(mods));
-	}
-}
+void myC::establishInitialCallbacksForRC() {
+  Controller::establishInitialCallbacksForRC();
+  
+  glutMouseFunc( myC::mouseFuncCB );
+  glutMotionFunc( myC::mouseMotionCB );
+} 
 
 void myC::handleMouseFunc( int button, int state, int x, int y )
 {
@@ -55,26 +34,39 @@ void myC::handleMouseFunc( int button, int state, int x, int y )
   ModelViewWithPhongLighting::handleMouseFunc( button, state, ldsX, ldsY );
 
   glutPostRedisplay();
-}
+} 
 
 void myC::handleMouseMotion( int x, int y )
 {
   ModelViewWithPhongLighting::handleMouseMotion( x, y );
   glutPostRedisplay();
-}
+} 
 
-void myC::mouseMotionCB(GLFWwindow* window, double x, double y)
+void myC::handleMousePassiveMotion( int x, int y )
 {
-	if (curController != NULL)
-	{
-		myC* c = dynamic_cast<myC*>(curController);
-		c->lastPixelPosX = static_cast<int>(x + 0.5);
-		c->lastPixelPosY = static_cast<int>(y + 0.5);
-		c->handleMouseMotion(c->lastPixelPosX, c->lastPixelPosY);
-	}
-}
+  double ldsX, ldsY;
+  screenXYToLDS( x, y, ldsX, ldsY );
+  ModelViewWithPhongLighting::handleMousePassiveMotion( ldsX, ldsY );
+} 
 
-void myC::scrollCB(GLFWwindow* window, double xOffset, double yOffset)
+void myC::mouseFuncCB( int button, int state, int x, int y )
 {
-	dynamic_cast<myC*>(curController)->handleScroll(yOffset > 0.0);
-}
+  if( curControllerSub != NULL )
+    curControllerSub->handleMouseFunc( button, state, x, y );
+} 
+
+void myC::mouseMotionCB( int x, int y )
+{
+  if( curControllerSub != NULL )
+    curControllerSub->handleMouseMotion( x, y );
+} 
+
+void myC::mousePassiveMotionCB( int x, int y )
+{
+  if( curControllerSub != NULL )
+    curControllerSub->handleMousePassiveMotion( x, y );
+}  
+
+void myC::handleDisplay()
+{
+} 

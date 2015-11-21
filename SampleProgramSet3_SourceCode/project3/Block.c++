@@ -86,8 +86,6 @@ void Block::renderBlock(float* color)
 {
 	glBindVertexArray(vao[0]);
 	glUniform3fv(ppuLoc_kd, 1, color);
-	glUniform3fv(ppuLoc_ka, 1, color);
-	glUniform3fv(ppuLoc_ks, 1, color);
 
 	// The three faces that can be drawn with glDrawArrays
 	glVertexAttrib3f(pvaLoc_mcNormal, 0.0, 0.0, 1.0);

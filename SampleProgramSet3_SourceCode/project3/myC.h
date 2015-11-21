@@ -1,28 +1,36 @@
-// myC.h - A concrete GLFWController subclass using the GLFW window interface
+#ifndef __MYC_H__
+#define __MYC_H__
 
-#ifndef MYC_H
-#define MYC_H
+#include "Controller.h"
+#include <GL/gl.h>
+#include <GL/freeglut.h>
+#include "ModelViewWithPhongLighting.h"
 
-#ifdef __APPLE_CC__
-#define GLFW_INCLUDE_GLCOREARB
-#endif
-#include "GLFW/glfw3.h"
-
-#include "GLFWController.h"
-
-class myC : public GLFWController
+class myC : public Controller
 {
-public:
-	myC(const std::string& windowTitle, int rcFlags = 0);
-	virtual ~myC();
+ public:
+  enum {
+    ScreenWidth = 360,
+    ScreenHeight = 360
+  };
 
-private:
+ public:
+  explicit myC( const std::string& name, int glutRCFlags = 0 );
+  virtual ~myC();
+  virtual void handleDisplay();
 
-	static bool glfwInitialized;
-	static bool buttonPressed;
-	static void mouseFuncCB(GLFWwindow* window, int button, int action, int mods);
-	static void mouseMotionCB(GLFWwindow* window, double x, double y);
-	static void scrollCB(GLFWwindow* window, double xOffset, double yOffset);
+ private:
+  
+  virtual void establishInitialCallbacksForRC();
+  virtual void handleMouseFunc( int button, int state, int x, int y );
+  virtual void handleMouseMotion( int x, int y );
+  virtual void handleMousePassiveMotion( int x, int y );
+  static void mouseFuncCB( int button, int state, int x, int y );
+  static void mouseMotionCB( int x, int y );
+  static void mousePassiveMotionCB( int x, int y );
+
+  static myC * curControllerSub;
+  bool bDrawOpaque;
 };
 
 #endif

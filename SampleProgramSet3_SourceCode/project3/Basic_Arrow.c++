@@ -61,7 +61,7 @@ void Basic_Arrow::define_basic_arrow()
 		{(basexmin - 15.0) ,(baseymax + 30.0) , (basezmin + 2.0)},
 		{(basexmin - 20.0) ,(baseymax + 30.0) , (basezmin + 2.5)},
 		{((basexmax + basexmin)/2.0) ,(baseymax + 105.0), (basezmin + 2.0)},
-		{((basexmax + basexmin)/2.0) ,(baseymax + 110.0), (basezmin + 2.5)},
+		{((basexmax + basexmin)/2.0) ,(baseymax + 110.0), (basezmin + 5)},
 		{(basexmax + 15.0) ,(baseymax + 30.0) , (basezmin + 2.0)},
 		{(basexmax + 20.0) ,(baseymax + 30.0) , (basezmin + 2.5)},
 		{basexmax ,baseymax, basezmin},
@@ -73,7 +73,7 @@ void Basic_Arrow::define_basic_arrow()
 		{(basexmin - 15.0) ,(baseymax + 30.0) , (basezmax - 2.0)},
 		{(basexmin - 20.0) ,(baseymax + 30.0) , (basezmax - 2.5)},
 		{((basexmax + basexmin)/2.0) ,(baseymax + 105.0), (basezmax - 2.0)},
-		{((basexmax + basexmin)/2.0) ,(baseymax + 110.0), (basezmax - 2.5)},
+		{((basexmax + basexmin)/2.0) ,(baseymax + 110.0), (basezmax - 5)},
 		{(basexmax + 15.0) ,(baseymax + 30.0) , (basezmax - 2.0)},
 		{(basexmax + 20.0) ,(baseymax + 30.0) , (basezmax - 2.5)},
 		{basexmax ,baseymax, basezmax},
@@ -134,9 +134,9 @@ void Basic_Arrow::render_basic_arrow(float *color)
 
 	glBindVertexArray(vao[0]);
 	glUniform3fv(ppuLoc_kd, 1, color);	
-	glUniform3fv(ppuLoc_ka, 1, color);
-	glUniform3fv(ppuLoc_ks, 1, color);
-	glUniform1f (ppuLoc_m, m);
+	//glUniform3fv(ppuLoc_ka, 1, color);
+	//glUniform3fv(ppuLoc_ks, 1, color);
+	//glUniform1f (ppuLoc_m, m);
 
 	//Base Left Front Face
 	glVertexAttrib3f(pvaLoc_mcNormal, 1.0, 0.0, -1.0);

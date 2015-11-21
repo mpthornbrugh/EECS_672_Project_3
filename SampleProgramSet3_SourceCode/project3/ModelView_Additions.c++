@@ -4,7 +4,7 @@
 
 void ModelView::addToGlobalRotationDegrees(double rx, double ry, double rz)
 {
-	dynamic_view = rx * ry * rz * dynamic_view;
+	dynamic_view = cryph::Matrix4x4::xRotationDegrees( ry ) * cryph::Matrix4x4::yRotationDegrees( rx ) * /*cryph::Matrix4x4::xRotationDegrees( rz ) **/ dynamic_view;
 }
 
 void ModelView::addToGlobalZoom(double increment)
@@ -26,9 +26,21 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 
 	double vAR = Controller::getCurrentController()->getViewportAspectRatio();
 	matchAspectRatio(ecXmin, ecXmax, ecYmin, ecYmax, vAR);
+
+	double maxDelta = mcRegionOfInterest[1] - mcRegionOfInterest[0];
+	double delta = mcRegionOfInterest[3] - mcRegionOfInterest[2];
+	if (delta > maxDelta)
+		maxDelta = delta;
+	delta = mcRegionOfInterest[5] - mcRegionOfInterest[4];
+	if (delta > maxDelta)
+		maxDelta = delta;
+	double distEyeCenter = 2.0 * maxDelta;
+
+	cryph::AffVector postTran(0.0, 0.0, -distEyeCenter);
+	cryph::AffVector preTran(0.0, 0.0, distEyeCenter);
 	
 	cryph::Matrix4x4 M_ECu = cryph::Matrix4x4::lookAt(ModelView::eye, ModelView::center, ModelView::up);
-	mc_ec = dynamic_view * M_ECu;
+	mc_ec = cryph::Matrix4x4::translation(postTran) * dynamic_view * cryph::Matrix4x4::translation(preTran) * M_ECu;
 
 	//Scall both widths by dynamic zoom
 	ecXmin -= zoomAmount;
