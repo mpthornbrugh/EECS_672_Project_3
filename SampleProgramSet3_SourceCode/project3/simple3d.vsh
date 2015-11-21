@@ -30,7 +30,7 @@ vec3 evaluateLightingModel(in vec3 ec_Q, in vec3 ec_nHat)
     // if we are viewing this point "from behind", we need to negate the incoming
     // normal vector since our lighting model expressions implicitly assume the normal
     // vector points toward the same side of the triangle that the eye is on.
-    if (dot(ec_nHat, vHat) > 90 || dot(ec_nHat, vHat) < -90) {
+    if (ec_nHat.dot(vHat) > 90 || ec_nHat.dot(vHat) < -90) {
     	ec_nHat = -1.0 * ec_nHat;
     }
 
@@ -38,34 +38,47 @@ vec3 evaluateLightingModel(in vec3 ec_Q, in vec3 ec_nHat)
 
     decompose(vHat, vHatParallel, vHatPerpendicular);
 
+    vec3 lightVal = ka * globalAmbient;
+
     for (int i = 0 ; i < MAX_NUM_LIGHTS ; i++)
     {
+    	vec3 diffuseLight, specularLight;
     	if (p_ecLightPos[i].a > 0.0) {//Positional light
     		cryph::AffVector lightParallel, lightPerpendicular;
 	    	cryph::AffVector li = normalize(ec_Q - p_ecLightPos[i]);
 
 	    	decompose(li, lightParallel, lightPerpendicular);
 
+	    	//Attenuation Part
 	    	//Compute diffuse contribution
+	    	vec3 diffuseLight = kd * (dot(ec_nHat, li));
 
-	    	if (dot(lightParallel, vHatParallel) >= 90 || dot(lightParallel, vHatParallel) <= -90) {//Viewer is on right side
-	    		//Compute specular contribution
+	    	if (lightParallel.dot(vHatParallel) >= 90 || lightParallel.dot(vHatParallel) <= -90) {//Viewer is on right side
+	    		vec3 riHat = ec_nHat;
+	    		riHat = riHat * 2;
+	    		riHat = riHat * li.dot(ec_nHat);
+	    		riHat = riHat - li;
+
+	    		specularLight = ks;
+	    		double dotVal = riHat.dot(vHat);
+	    		for (int j = 0; j < m; j++) {
+	    			specularLight = specularLight * (dot())
+	    		}
+	    	}
+	    	else {
+	    		specularLight = {0.0,0.0,0.0};
 	    	}
     	}
     	else { //Directional Light
     		//Compute diffuse contribution
     		//Compute specular contribution
     	}
+
+    	lightVal = lightVal + (lightStrength[i] * (diffuseLight + specularLight));
     }
 
 
 
-
-
-	float factor = ka * la;
-	for (int i = 0; i < numLights; i++) {
-		factor += 
-	}
 
 	// Simplistic lighting model:
 	// Reflected color will be a function of angle between the normal
