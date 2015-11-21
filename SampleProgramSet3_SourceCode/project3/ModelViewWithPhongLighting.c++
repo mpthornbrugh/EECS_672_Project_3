@@ -107,6 +107,41 @@ void ModelViewWithPhongLighting::handleScroll(bool isZoomOut)
 	}
 }
 
+void ModelViewWithPhongLighting::sendPhongLightModel( const vec4& ka, const vec4& kd, const vec4& ks, const float m )
+{
+  float lightPositionInEC[4 * numLights];
+
+  // convert the light sources to Eye Coordinates
+  for( short i = 0; i < numLights; ++i )
+    {
+      if( _lightPosition[i][4] == 0.0f )
+	{
+	  // already in eye coordinates
+	  lightPositionInEC[i] = _lightPosition[i][0];
+	  lightPositionInEC[i+1] = _lightPosition[i][1];
+	  lightPositionInEC[i+2] = _lightPosition[i][2];
+	  lightPositionInEC[i+3] = _lightPosition[i][3];
+	  continue;
+	}
+      
+      cryph::AffVector tmpLightPosition( _lightPosition[i] );
+      cryph::Matrix4x4 wcToECMat( _model_view );
+
+      cryph::AffVector ecLightPos = wcToECMat * tmpLightPosition;
+      ecLightPos.vComponents( lightPositionInEC, 3 * i );
+    }
+
+  glUniform4fv( ppuLoc_lightPosition, numLights, lightPositionInEC );
+  glUniform3fv( ppuLoc_lightStrength, numLights, _lightStrength );
+  glUniform1i( ppuLoc_actualNumLights, numLights );
+  glUniform4fv( ppuLoc_globalAmbient, 1, _ambientStrength );
+
+  glUniform4fv( ppuLoc_ka, 1, ka );
+  glUniform4fv( ppuLoc_kd, 1, kd );
+  glUniform4fv( ppuLoc_ks, 1, ks );
+  glUniform1f( ppuLoc_m, m );
+}
+
 
 
 
