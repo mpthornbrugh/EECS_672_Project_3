@@ -16,7 +16,7 @@ typedef float vec3[3];
 
 void addBasicArrowHead(Controller &c, const cryph::AffPoint& connectionPoint, const cryph::Matrix4x4 &m)
 {
-    float color[3] = {0.0/255.0, 255.0/255.0, 0.0/255.0};
+    float color[3] = {0.0/255.0, 255.0/200.0, 0.0/255.0};
 
     c.addModel(new Basic_Arrow(connectionPoint, m, color));
 }
