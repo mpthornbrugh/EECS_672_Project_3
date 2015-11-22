@@ -16,8 +16,27 @@ GLuint ModelViewWithPhongLighting::shaderProgram = 0;
 GLint ModelViewWithPhongLighting::pvaLoc_mcPosition = -2;
 GLint ModelViewWithPhongLighting::pvaLoc_mcNormal = -2;
 GLint ModelViewWithPhongLighting::ppuLoc_kd = -2;
+GLint ModelViewWithPhongLighting::ppuLoc_ka = -2;
+GLint ModelViewWithPhongLighting::ppuLoc_ks = -2;
+GLint ModelViewWithPhongLighting::ppuLoc_m = -2;
 GLint ModelViewWithPhongLighting::ppuLoc_mc_ec = -2;
 GLint ModelViewWithPhongLighting::ppuLoc_ec_lds = -2;
+GLint ModelViewWithPhongLighting::ppuLoc_actualNumLights = -2;
+GLint ModelViewWithPhongLighting::ppuLoc_lightPosition = -2;
+GLint ModelViewWithPhongLighting::ppuLoc_lightStrength = -2;
+GLint ModelViewWithPhongLighting::ppuLoc_globalAmbient = -2;
+
+vec4 ModelViewWithPhongLighting::lightPositions[numLights] = {
+	{-1.0, 0.0, 0.5, 0.0},
+	{0.0, 1.0, 1.0, 0.0},
+	{0.0, 0.0, 2.0, 1.0}
+};
+float ModelViewWithPhongLighting::lightStrengths[3 * numLights] = {
+	1.0, 1.0, 1.0,
+	0.6, 0.6, 0.6,
+	1.0, 0.0, 0.0
+};
+vec4 ModelViewWithPhongLighting::ambientStrength = {0.25, 0.25, 0.25, 1.0};
 
 std::string ModelViewWithPhongLighting::vShaderSource = "simple3d.vsh";
 std::string ModelViewWithPhongLighting::fShaderSource = "simple3d.fsh";
@@ -54,6 +73,11 @@ void ModelViewWithPhongLighting::fetchGLSLVariableLocations()
 		pvaLoc_mcPosition = pvAttribLocation(shaderProgram, "mcPosition");
 		pvaLoc_mcNormal = pvAttribLocation(shaderProgram, "mcNormal");
 		ppuLoc_kd = ppUniformLocation(shaderProgram, "kd");
+		ppuLoc_ka = ppUniformLocation(shaderProgram, "ka");
+		ppuLoc_ks = ppUniformLocation(shaderProgram, "ks");
+		ppuLoc_m = ppUniformLocation(shaderProgram, "m");
+		ppuLoc_lightPosition = ppUniformLocation(shaderProgram, "lightPositions");
+		ppuLoc_lightStrength = ppUniformLocation(shaderProgram, "lightStrengths");
 		ppuLoc_mc_ec = ppUniformLocation(shaderProgram, "mc_ec");
 		ppuLoc_ec_lds = ppUniformLocation(shaderProgram, "ec_lds");
 	}
@@ -125,37 +149,39 @@ void ModelViewWithPhongLighting::switchProjectionType(int projectionType)
 
 void ModelViewWithPhongLighting::sendPhongLightModel( const vec4& ka, const vec4& kd, const vec4& ks, const float m )
 {
-  float lightPositionInEC[4 * numLights];
+	float lightPositionInEC[4 * numLights];
 
-  // convert the light sources to Eye Coordinates
-  for( short i = 0; i < numLights; ++i )
-    {
-      if( _lightPosition[i][4] == 0.0f )
+	// convert the light sources to Eye Coordinates
+	for( short i = 0; i < numLights; ++i )
 	{
-	  // already in eye coordinates
-	  lightPositionInEC[i] = _lightPosition[i][0];
-	  lightPositionInEC[i+1] = _lightPosition[i][1];
-	  lightPositionInEC[i+2] = _lightPosition[i][2];
-	  lightPositionInEC[i+3] = _lightPosition[i][3];
-	  continue;
+		if( lightPositions[i][4] == 0.0f )
+		{
+			// already in eye coordinates
+			lightPositionInEC[i] = lightPositions[i][0];
+			lightPositionInEC[i+1] = lightPositions[i][1];
+			lightPositionInEC[i+2] = lightPositions[i][2];
+			lightPositionInEC[i+3] = lightPositions[i][3];
+			continue;
+		}
+
+		cryph::Matrix4x4 mc_ec, ec_lds;
+		getMatrices(mc_ec, ec_lds);
+
+		cryph::AffVector tmpLightPosition( lightPositions[i] );
+
+		cryph::AffVector ecLightPos = mc_ec * tmpLightPosition;
+		ecLightPos.vComponents( lightPositionInEC, 3 * i );
 	}
-      
-      cryph::AffVector tmpLightPosition( _lightPosition[i] );
-      cryph::Matrix4x4 wcToECMat( _model_view );
 
-      cryph::AffVector ecLightPos = wcToECMat * tmpLightPosition;
-      ecLightPos.vComponents( lightPositionInEC, 3 * i );
-    }
+	glUniform4fv( ppuLoc_lightPosition, numLights, lightPositionInEC );
+	glUniform3fv( ppuLoc_lightStrength, numLights, lightStrengths );
+	glUniform1i( ppuLoc_actualNumLights, numLights );
+	glUniform4fv( ppuLoc_globalAmbient, 1, ambientStrength );
 
-  glUniform4fv( ppuLoc_lightPosition, numLights, lightPositionInEC );
-  glUniform3fv( ppuLoc_lightStrength, numLights, _lightStrength );
-  glUniform1i( ppuLoc_actualNumLights, numLights );
-  glUniform4fv( ppuLoc_globalAmbient, 1, _ambientStrength );
-
-  glUniform4fv( ppuLoc_ka, 1, ka );
-  glUniform4fv( ppuLoc_kd, 1, kd );
-  glUniform4fv( ppuLoc_ks, 1, ks );
-  glUniform1f( ppuLoc_m, m );
+	glUniform4fv( ppuLoc_ka, 1, ka );
+	glUniform4fv( ppuLoc_kd, 1, kd );
+	glUniform4fv( ppuLoc_ks, 1, ks );
+	glUniform1f( ppuLoc_m, m );
 }
 
 

@@ -130,10 +130,21 @@ void Basic_Arrow::getMCBoundingBox(double* xyzLimits) const
 
 void Basic_Arrow::render_basic_arrow(float *color)
 {
-	float m = 5.0;
+	vec4 kd, ka;
+
+	kd[0] = ka[0] = color[0];
+	kd[1] = ka[1] = color[1];
+	kd[2] = ka[2] = color[2];
+	kd[3] = ka[3] = 1.0;
+
+	vec4 ks = {1.0, 1.0, 1.0, 1.0};
+
+	float m = 100.0;
+
+	sendPhongLightModel(ka, kd, ks, m);
 
 	glBindVertexArray(vao[0]);
-	glUniform3fv(ppuLoc_kd, 1, color);	
+	//glUniform3fv(ppuLoc_kd, 1, color);	
 	//glUniform3fv(ppuLoc_ka, 1, color);
 	//glUniform3fv(ppuLoc_ks, 1, color);
 	//glUniform1f (ppuLoc_m, m);

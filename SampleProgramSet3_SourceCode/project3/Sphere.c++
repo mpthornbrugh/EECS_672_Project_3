@@ -91,8 +91,22 @@ void Sphere::render()
     
     float* color = sphColor;
 
+
+	vec4 kd, ka;
+
+	kd[0] = ka[0] = color[0];
+	kd[1] = ka[1] = color[1];
+	kd[2] = ka[2] = color[2];
+	kd[3] = ka[3] = 1.0;
+
+	vec4 ks = {1.0, 1.0, 1.0, 1.0};
+
+	float m = 50.0;
+
+	sendPhongLightModel(ka, kd, ks, m);
+
     //glUniform3fv(ppuLoc_ka, 1, CountertopColor);
-    glUniform3fv(ppuLoc_kd, 1, color);
+    //glUniform3fv(ppuLoc_kd, 1, color);
     //glUniform3fv(ppuLoc_ks, 1, CountertopColor);
     //glUniform1f (ppuLoc_m, m);
 

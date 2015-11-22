@@ -14,6 +14,10 @@
 #include "ShaderIF.h"
 #include "Matrix4x4.h"
 
+typedef float mat4[16];
+typedef float vec4[4];
+typedef float vec3[3];
+
 class ModelViewWithPhongLighting : public ModelView
 {
 public:
@@ -28,6 +32,8 @@ public:
 
 	static void switchProjectionType(int projectionType);
 
+	enum { numLights = 3 };
+
 protected:
 
 	static ShaderIF* shaderIF;
@@ -38,12 +44,12 @@ protected:
 	static GLint ppuLoc_lightStrength;
 	static GLint ppuLoc_actualNumLights;
 	static GLint ppuLoc_globalAmbient;
-	static GLint ppuLoc_kd, ppuLoc_ka, ppuLoc_ks;
-	static GLint ppuLoc_mc_ec, ppuLoc_ec_lds;
+	static GLint ppuLoc_kd, ppuLoc_ka, ppuLoc_ks, ppuLoc_m;
+	static GLint ppuLoc_mc_ec, ppuLoc_ec_lds, ppuLoc_dynamic;
 
-	static vec4 _lightPosition[numLights];
-	static float _lightStrength[3 * numLights];
-	static vec4 _ambientStrength;
+	static vec4 lightPositions[numLights];
+	static float lightStrengths[3 * numLights];
+	static vec4 ambientStrength;
 
 	static void fetchGLSLVariableLocations();
 

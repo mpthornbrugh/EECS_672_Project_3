@@ -155,7 +155,20 @@ void Bedfeet::render()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	int N_POINTS_AROUND_SLICE = 18;
 
-	glUniform3fv(ppuLoc_kd, 1, color);
+	vec4 kd, ka;
+
+	kd[0] = ka[0] = color[0];
+	kd[1] = ka[1] = color[1];
+	kd[2] = ka[2] = color[2];
+	kd[3] = ka[3] = 1.0;
+
+	vec4 ks = {0.8, 0.8, 0.8, 1.0};
+
+	float m = 10.0;
+
+	sendPhongLightModel(ka, kd, ks, m);
+
+	//glUniform3fv(ppuLoc_kd, 1, color);
 	glBindVertexArray(vao[0]);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 2*(N_POINTS_AROUND_SLICE+1));
 

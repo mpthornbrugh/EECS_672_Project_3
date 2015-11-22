@@ -7,53 +7,47 @@
 const int MAX_NUM_LIGHTS = 3;
 
 // Transformation Matrices
-uniform mat4 M4x4_wc_ec =                                
+uniform mat4 mc_ec =                                
 	mat4(1.0, 0.0, 0.0, 0.0,
 	     0.0, 1.0, 0.0, 0.0,
 	     0.0, 0.0, 1.0, 0.0,
 	     0.0, 0.0, 0.0, 1.0);
-uniform mat4 M4x4_ec_lds =                               
+uniform mat4 ec_lds =                               
 	mat4(1.0, 0.0, 0.0, 0.0,
 	     0.0, 1.0, 0.0, 0.0,
 	     0.0, 0.0, -1.0, 0.0,
 	     0.0, 0.0, 0.0, 1.0);
-uniform mat4 M4x4_dynamic =
-	mat4( 1.0, 0.0, 0.0, 0.0,
-	      0.0, 1.0, 0.0, 0.0,
-	      0.0, 0.0, 1.0, 0.0,
-	      0.0, 0.0, 0.0, 1.0);
 
-uniform vec4 p_ecLightPos[MAX_NUM_LIGHTS];
-uniform vec3 lightStrength[MAX_NUM_LIGHTS];
+uniform vec4 lightPositions[MAX_NUM_LIGHTS];
+uniform vec3 lightStrengths[MAX_NUM_LIGHTS];
 uniform int actualNumLights = 1;
-uniform vec4 globalAmbient = vec4( 1.0, 1.0, 1.0, 1.0 ); 
+uniform vec4 globalAmbient = vec4( 0.2, 0.2, 0.2, 1.0 ); 
 uniform vec4 ka = vec4( 1.0, 0.0, 0.0, 1.0 );            
-uniform vec4 kd = vec4( 1.0, 0.0, 0.0, 1.0 );            
-uniform vec4 ks = vec4( 1.0, 0.0, 0.0, 1.0 );            
+uniform vec4 kd = vec4( 0.0, 1.0, 0.0, 1.0 );            
+uniform vec4 ks = vec4( 0.0, 0.0, 1.0, 1.0 );            
 uniform float m = 1.0;                                   
 
-layout (location = 0) in vec3 wcPosition;                
-in vec3 wcNormal;                                        
+layout (location = 0) in vec3 mcPosition;                
+in vec3 mcNormal;                                        
 
-out vec2 texCoord;
 out vec4 colorToFS;
 
 vec4 evaluateLightingModel(in vec3 ec_Q, in vec3 ec_nHat)
 {
-	vec4 I_q = { 0.0, 0.0, 0.0, 0.0 };
+	vec4 Iq = vec4(0.0, 0.0, 0.0, 0.0);
 
-	// ambientFactor;
-	I_q = ka * globalAmbient;
+	//Ambient
+	Iq = ka * globalAmbient;
 
 	// Create a unit vector towards the viewer (method depends on type of projection) 
 	// default value for orthogonal
-	vec3 ec_v = { 0.0, 0.0, 1.0 };
-	if( M4x4_ec_lds[3][3] != 1.0f )
+	vec3 ec_v = vec3( 0.0, 0.0, 1.0 );
+	if( ec_lds[3][3] != 1.0f )
 	    {
 		// perspective
 		ec_v = -normalize( ec_Q );
 	    }
-	else if( M4x4_ec_lds[1][0] != 0.0f && M4x4_ec_lds[2][0] != 0.0f )
+	else if( ec_lds[1][0] != 0.0f && ec_lds[2][0] != 0.0f )
 	    {
 		ec_v = vec3( 0.0, 0.0995037, 0.995037 );
 	    }
@@ -70,18 +64,18 @@ vec4 evaluateLightingModel(in vec3 ec_Q, in vec3 ec_nHat)
 	     {
 			// create vector to light source
 			vec3 ec_li;
-			ec_li = p_ecLightPos[i].xyz;
-			if( p_ecLightPos[i].w != 0.0 )
+			ec_li = lightPositions[i].xyz;
+			if( lightPositions[i].w != 0.0 )
 			{
 				ec_li = ec_li - ec_Q;
 			}
 			ec_li = normalize( ec_li );
 
 			// if light is behind this object, skip this light source 
-			float diffuse = dot( ec_nHat, ec_li );
+			float diffuse = abs(dot(normalize(ec_li), ec_nHat));
 			if( diffuse > 0.0f )
 			{
-				I_q.xyz += kd.xyz * diffuse * lightStrength[i].xyz;
+				Iq.xyz += kd.xyz * diffuse * lightStrengths[i].xyz;
 
 		        	// 2. if viewer on appropriate side of normal vector,
 		       		// compute and accumulate specular contribution
@@ -95,42 +89,31 @@ vec4 evaluateLightingModel(in vec3 ec_Q, in vec3 ec_nHat)
 				
 					float specular = clamp( pow( max( dot( r_i, ec_v ), 0.0 ), m ), 0.0, 1.0 );
 
-					I_q.xyz += ks.xyz * specular * lightStrength[i].xyz;
+					Iq.xyz += ks.xyz * specular * lightStrengths[i].xyz;
 				}
 		    	}
 	      }
 
-     if( I_q.x > 1.0 )
-      	  I_q.x = 1.0;
-     if( I_q.y > 1.0 )
-      	  I_q.y = 1.0;
-     if( I_q.z > 1.0 )
-          I_q.z = 1.0;
+     if( Iq.x > 1.0 )
+      	  Iq.x = 1.0;
+     if( Iq.y > 1.0 )
+      	  Iq.y = 1.0;
+     if( Iq.z > 1.0 )
+          Iq.z = 1.0;
 
-     return I_q;	      
+	return Iq;
 }
 
 void main ()
 {
 	// convert current vertex and its associated normal to eye coordinates
-	mat4 M = M4x4_dynamic * M4x4_wc_ec;
-	vec4 p_ecPosition = M * vec4(wcPosition, 1.0);
-	mat3 normalMatrix = transpose( inverse( mat3x3(M) ) );
-	vec3 ec_nHat = normalize(normalMatrix * wcNormal);
-
+	vec4 p_ecPosition = mc_ec * vec4(mcPosition, 1.0);
+	mat3 normalMatrix = transpose(inverse(mat3x3(mc_ec)));
+	vec3 ec_nHat = normalize(normalMatrix * mcNormal);
+	
 	colorToFS = evaluateLightingModel(p_ecPosition.xyz, ec_nHat);
 
 	// apply the projection matrix to compute the projective space representation
 	// of the 3D logical device space coordinates of the input vertex:
-
-	if( usingTexture != -1 )
-	{
-		texCoord = vTexCoord;
-	}
-	else
-	{
-		texCoord = vec2( 0, 0 );
-	}
-
-	gl_Position =  M4x4_ec_lds * p_ecPosition;
+	gl_Position = ec_lds * p_ecPosition;
 }

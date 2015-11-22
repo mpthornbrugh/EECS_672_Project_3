@@ -16,7 +16,7 @@ typedef float vec3[3];
 
 void addBasicArrowHead(Controller &c, const cryph::AffPoint& connectionPoint, const cryph::Matrix4x4 &m)
 {
-    float color[3] = {0.0/255.0, 255.0/200.0, 0.0/255.0};
+    float color[3] = {100.0/255.0, 255.0/200.0, 100.0/255.0};
 
     c.addModel(new Basic_Arrow(connectionPoint, m, color));
 }
@@ -225,7 +225,7 @@ int main(int argc, char* argv[])
 	c.reportVersions(std::cout);
 
 	// create your scene, adding things to the Controller....
-	cryph::AffPoint p4(760.0,600.0,100.0);
+	cryph::AffPoint p4(760.0,600.0,50.0);
 	cryph::Matrix4x4 xRot = cryph::Matrix4x4::xRotationDegrees(0.0);
 	cryph::Matrix4x4 yRot = cryph::Matrix4x4::yRotationDegrees(0.0);
 	cryph::Matrix4x4 zRot = cryph::Matrix4x4::zRotationDegrees(0.0);	 
