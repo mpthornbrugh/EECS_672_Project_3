@@ -117,6 +117,8 @@ void GLFWControllerSub::keyboardCB(GLFWwindow* window, int key, int scanCode, in
 {
 	if (curController != NULL)
 	{
+		std::cout << "Key Pressed: " << key << std::endl;
+		//When O,P, or Q need to call ModelViewWithPhongLighting::SwitchProjection(type);
 		GLFWControllerSub* theC = dynamic_cast<GLFWControllerSub*>(curController);
 		if (key == GLFW_KEY_ESCAPE)
 			theC->handleAsciiChar(27, theC->lastPixelPosX, theC->lastPixelPosY);

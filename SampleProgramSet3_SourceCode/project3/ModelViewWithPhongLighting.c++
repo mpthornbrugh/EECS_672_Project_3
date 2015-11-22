@@ -107,6 +107,22 @@ void ModelViewWithPhongLighting::handleScroll(bool isZoomOut)
 	}
 }
 
+void ModelViewWithPhongLighting::switchProjectionType(int projectionType)
+{
+	if (projectionType == 0) {
+		//Set to orthogonal
+		setProjection(ORTHOGONAL);
+	}
+	else if (projectionType == 1) {
+		//Set to projection
+		setProjection(PERSPECTIVE);
+	}
+	else {
+		//Set to oblique
+		setProjection(OBLIQUE);
+	}
+}
+
 void ModelViewWithPhongLighting::sendPhongLightModel( const vec4& ka, const vec4& kd, const vec4& ks, const float m )
 {
   float lightPositionInEC[4 * numLights];

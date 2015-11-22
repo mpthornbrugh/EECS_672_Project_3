@@ -26,6 +26,8 @@ public:
 	static void handleMouseFunc(int button, int state, int x, int y);
 	static void handleScroll(bool isZoomIn);
 
+	static void switchProjectionType(int projectionType);
+
 protected:
 
 	static ShaderIF* shaderIF;
